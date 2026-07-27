@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+    <linearGradient id="sk2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B2237"/>
+      <stop offset="1" stop-color="#123353"/>
+    </linearGradient>
+    <linearGradient id="sun2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3FA7E8" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#3FA7E8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sk2)"/>
+  <circle cx="620" cy="150" r="230" fill="url(#sun2)"/>
+  <circle cx="660" cy="120" r="86" fill="none" stroke="#3FA7E8" stroke-opacity="0.148" stroke-width="1.5"/><circle cx="660" cy="120" r="132" fill="none" stroke="#3FA7E8" stroke-opacity="0.136" stroke-width="1.5"/><circle cx="660" cy="120" r="178" fill="none" stroke="#3FA7E8" stroke-opacity="0.124" stroke-width="1.5"/><circle cx="660" cy="120" r="224" fill="none" stroke="#3FA7E8" stroke-opacity="0.112" stroke-width="1.5"/><circle cx="660" cy="120" r="270" fill="none" stroke="#3FA7E8" stroke-opacity="0.100" stroke-width="1.5"/><circle cx="660" cy="120" r="316" fill="none" stroke="#3FA7E8" stroke-opacity="0.088" stroke-width="1.5"/><circle cx="660" cy="120" r="362" fill="none" stroke="#3FA7E8" stroke-opacity="0.076" stroke-width="1.5"/>
+
+  <path d="M0 430 Q160 360 330 410 T680 400 T800 420 V600 H0 Z" fill="#123353" fill-opacity="0.55"/>
+  <path d="M0 470 Q210 405 430 455 T800 460 V600 H0 Z" fill="#0B2237" fill-opacity="0.75"/><rect y="495" width="800" height="105" fill="#F4F7FA"/>
+  <rect y="495" width="800" height="3" fill="#2F9BE0" opacity="0.5"/>
+    <g stroke="#3FA7E8" stroke-opacity="0.4" stroke-width="2" fill="none">
+      <path d="M60 540 Q400 470 760 545"/>
+      <path d="M60 570 Q400 505 760 575"/>
+    </g>
+    <path d="M540 495 l16 -34 16 34 z" fill="#123353" fill-opacity="0.8"/>
+    <path d="M250 495 l12 -26 12 26 z" fill="#123353" fill-opacity="0.7"/>
+<g transform="translate(28,28)">
+    <rect width="103.60000000000001" height="30" rx="15" fill="#0B2237" fill-opacity="0.62"/>
+    <circle cx="18" cy="15" r="4" fill="#E0A93F"/>
+    <text x="30" y="20" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#fff" letter-spacing="1">FOTO DEMO</text>
+  </g>
+</svg>

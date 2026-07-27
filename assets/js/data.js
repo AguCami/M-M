@@ -1,0 +1,78 @@
+/* Datos de propiedades — TODOS SON DE DEMOSTRACIÓN.
+   Reemplazar por el inventario real de M&M. Ninguna de estas propiedades,
+   precios o direcciones es real. Zonas: barrios/localidades reales del Gran
+   Córdoba (Argentina) usados solo como contexto geográfico. */
+window.MM_PROPS = [
+  {
+    id: "nc-101", titulo: "Departamento a estrenar con balcón aterrazado",
+    tipo: "departamento", operacion: "venta", zona: "Nueva Córdoba",
+    precio: 128000, moneda: "USD", dorm: 2, banos: 2, m2: 74, cochera: 1,
+    destacado: true, oportunidad: false, img: "assets/img/props/prop-2.svg",
+    desc: "Unidad luminosa en piso alto, cocina integrada y amenities completos a metros del Parque Sarmiento.",
+    amenities: ["Balcón aterrazado", "Amenities", "Pileta", "SUM", "Seguridad 24h", "Cochera cubierta"],
+  },
+  {
+    id: "cr-102", titulo: "Casa moderna 3 dormitorios con jardín",
+    tipo: "casa", operacion: "venta", zona: "Cerro de las Rosas",
+    precio: 315000, moneda: "USD", dorm: 3, banos: 3, m2: 220, cochera: 2,
+    destacado: true, oportunidad: false, img: "assets/img/props/prop-1.svg",
+    desc: "Diseño contemporáneo en dos plantas, quincho con parrilla, fondo verde y doble cochera.",
+    amenities: ["Jardín", "Quincho", "Parrilla", "Doble cochera", "Pisos de porcelanato", "Living con doble altura"],
+  },
+  {
+    id: "va-103", titulo: "Lote en barrio cerrado con vista a la sierra",
+    tipo: "lote", operacion: "venta", zona: "Valle Escondido",
+    precio: 62000, moneda: "USD", dorm: 0, banos: 0, m2: 800, cochera: 0,
+    destacado: true, oportunidad: true, img: "assets/img/props/prop-3.svg",
+    desc: "Terreno en country con seguridad, servicios subterráneos y club house. Orientación norte.",
+    amenities: ["Barrio cerrado", "Seguridad 24h", "Club house", "Servicios subterráneos", "Vista a la sierra", "Orientación norte"],
+  },
+  {
+    id: "gp-104", titulo: "PH reciclado 2 ambientes en Güemes",
+    tipo: "departamento", operacion: "alquiler", zona: "Güemes",
+    precio: 480000, moneda: "ARS", dorm: 1, banos: 1, m2: 52, cochera: 0,
+    destacado: true, oportunidad: false, img: "assets/img/props/prop-6.svg",
+    desc: "PH con patio propio en el corazón del Paseo de las Artes, ideal para vivienda o estudio profesional.",
+    amenities: ["Patio propio", "Reciclado a nuevo", "Zona gastronómica", "Luminoso"],
+  },
+  {
+    id: "me-105", titulo: "Casa quinta con pileta y monte",
+    tipo: "campo", operacion: "venta", zona: "Mendiolaza",
+    precio: 245000, moneda: "USD", dorm: 3, banos: 2, m2: 1500, cochera: 3,
+    destacado: true, oportunidad: true, img: "assets/img/props/prop-5.svg",
+    desc: "Amplio terreno arbolado con casa principal, pileta, galería y espacio para huerta a minutos del centro.",
+    amenities: ["Pileta", "Monte nativo", "Galería", "Perforación de agua", "Espacio para huerta", "3 cocheras"],
+  },
+  {
+    id: "ac-106", titulo: "Departamento 1 dormitorio con renta asegurada",
+    tipo: "departamento", operacion: "venta", zona: "Alta Córdoba",
+    precio: 74000, moneda: "USD", dorm: 1, banos: 1, m2: 45, cochera: 0,
+    destacado: true, oportunidad: true, img: "assets/img/props/prop-9.svg",
+    desc: "Excelente unidad de inversión con inquilino y contrato vigente. Sólida rentabilidad en dólares.",
+    amenities: ["Renta vigente", "Bajas expensas", "Cerca de la UNC", "Apto profesional"],
+  },
+  {
+    id: "jd-107", titulo: "Casa de categoría 4 dormitorios",
+    tipo: "casa", operacion: "venta", zona: "Barrio Jardín",
+    precio: 398000, moneda: "USD", dorm: 4, banos: 3, m2: 280, cochera: 2,
+    destacado: false, oportunidad: false, img: "assets/img/props/prop-8.svg",
+    desc: "Residencia familiar en zona consolidada, con dependencia, escritorio y amplio parque.",
+    amenities: ["Parque", "Dependencia", "Escritorio", "Losa radiante", "Doble cochera"],
+  },
+  {
+    id: "vc-108", titulo: "Lote industrial sobre ruta",
+    tipo: "lote", operacion: "venta", zona: "Villa Allende",
+    precio: 89000, moneda: "USD", dorm: 0, banos: 0, m2: 1200, cochera: 0,
+    destacado: false, oportunidad: false, img: "assets/img/props/prop-7.svg",
+    desc: "Terreno con excelente acceso y frente sobre ruta, apto galpón o desarrollo comercial.",
+    amenities: ["Frente a ruta", "Apto comercial", "Servicios en frente", "Gran superficie"],
+  },
+  {
+    id: "nc-109", titulo: "Monoambiente premium para inversión",
+    tipo: "departamento", operacion: "alquiler", zona: "Nueva Córdoba",
+    precio: 360000, moneda: "ARS", dorm: 1, banos: 1, m2: 38, cochera: 0,
+    destacado: false, oportunidad: false, img: "assets/img/props/prop-2.svg",
+    desc: "Monoambiente amoblado en edificio con amenities, listo para habitar frente a la plaza.",
+    amenities: ["Amoblado", "Amenities", "Gimnasio", "Laundry", "Frente a plaza"],
+  },
+];
