@@ -1,0 +1,113 @@
+<meta charset="utf-8">
+<title>M&M — video scroll "se construye tu propiedad"</title>
+<style>
+  :root{
+    --celeste:#2F9BE0; --celeste-200:#BFE0F6; --navy:#0B2237; --on-dark-soft:#A9C6DD;
+    --fd:"Archivo","Segoe UI",system-ui,sans-serif; --fb:"Hanken Grotesk","Segoe UI",system-ui,sans-serif;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--fb);background:#081a2c;color:#fff}
+
+  /* sección alta = "riel" del scroll; adentro el video queda fijo */
+  .vscroll{position:relative;height:420vh;background:#081a2c}
+  .vsticky{position:sticky;top:0;height:100vh;overflow:hidden;background:#081a2c}
+  .vsticky video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#081a2c}
+
+  /* legibilidad + marca */
+  .vgrad{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(8,26,44,.55) 0%,rgba(8,26,44,0) 26%,rgba(8,26,44,0) 62%,rgba(8,26,44,.72) 100%)}
+  .voverlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:clamp(1.4rem,4vw,3.4rem);pointer-events:none}
+  .veyebrow{display:inline-flex;align-items:center;gap:.55rem;color:var(--celeste-200);font-weight:600;
+    font-size:clamp(.8rem,.75rem+.2vw,.95rem);letter-spacing:.02em;margin-bottom:.6rem}
+  .veyebrow::before{content:"";width:26px;height:2px;background:linear-gradient(90deg,var(--celeste-200),transparent)}
+  .vtitle{font-family:var(--fd);font-weight:800;letter-spacing:-.03em;line-height:1.02;
+    font-size:clamp(2rem,1.3rem+3vw,4rem);max-width:16ch;margin:0}
+  .vtitle em{font-style:normal;color:var(--celeste)}
+  .vsub{color:var(--on-dark-soft);font-size:clamp(1rem,.95rem+.3vw,1.25rem);max-width:44ch;margin:.7rem 0 0}
+
+  /* barra de progreso */
+  .vbar{position:absolute;left:clamp(1.4rem,4vw,3.4rem);right:clamp(1.4rem,4vw,3.4rem);bottom:clamp(1rem,2.5vw,1.8rem);
+    height:3px;border-radius:3px;background:rgba(255,255,255,.16)}
+  .vbar .vfill{height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--celeste),var(--celeste-200))}
+
+  /* hint de scroll (se desvanece al arrancar) */
+  .vhint{position:absolute;top:clamp(1.2rem,3vw,2rem);left:50%;transform:translateX(-50%);
+    color:var(--on-dark-soft);font-size:.85rem;display:flex;flex-direction:column;align-items:center;gap:.35rem;
+    transition:opacity .4s var(--ease)}
+  .vhint svg{width:22px;height:22px;color:var(--celeste);animation:vbob 1.8s var(--ease) infinite}
+  @keyframes vbob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+  @media (max-width:640px){ .vtitle{max-width:14ch} .vsub{display:none} }
+  @media (prefers-reduced-motion:reduce){ .vhint svg{animation:none} }
+</style>
+
+<section class="vscroll" id="vscroll">
+  <div class="vsticky">
+    <video id="vreveal" src="assets/video/reveal.mp4" muted playsinline preload="auto"
+           poster="" aria-label="Una propiedad que se construye del plano a la casa terminada"></video>
+    <div class="vgrad"></div>
+
+    <div class="vhint" id="vhint">Scrolleá
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+    </div>
+
+    <div class="voverlay">
+      <span class="veyebrow">Inversiones Generales M&amp;M</span>
+      <h2 class="vtitle">Del plano a <em>las llaves</em>.</h2>
+      <p class="vsub">Scrolleá y mirá cómo se construye tu inversión, etapa por etapa.</p>
+    </div>
+
+    <div class="vbar"><div class="vfill" id="vfill"></div></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var sec=document.getElementById("vscroll");
+  var vid=document.getElementById("vreveal");
+  var fill=document.getElementById("vfill");
+  var hint=document.getElementById("vhint");
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canScrub=matchMedia("(hover:hover) and (pointer:fine)").matches && !reduce;
+  var clamp=function(v){return v<0?0:v>1?1:v;};
+  var dur=0, target=0, cur=0, raf=0;
+
+  vid.addEventListener("loadedmetadata",function(){ dur=vid.duration||0; update(); });
+
+  function progress(){
+    var total=sec.offsetHeight-innerHeight;
+    return clamp(-sec.getBoundingClientRect().top/total);
+  }
+  function paint(p){
+    fill.style.width=(p*100)+"%";
+    if(hint) hint.style.opacity=String(clamp(1-p*8));
+  }
+  // scrubbing suave: interpolamos hacia el target del scroll
+  function loop(){
+    cur+=(target-cur)*0.18;
+    if(dur && Math.abs(vid.currentTime-cur*dur)>0.02){ try{ vid.currentTime=cur*dur; }catch(e){} }
+    if(Math.abs(target-cur)>0.001){ raf=requestAnimationFrame(loop); } else { raf=0; }
+  }
+  function update(){
+    var p=progress(); target=p; paint(p);
+    if(canScrub && !raf) raf=requestAnimationFrame(loop);
+  }
+
+  if(canScrub){
+    try{ vid.pause(); }catch(e){}
+    addEventListener("scroll",update,{passive:true});
+    addEventListener("resize",update);
+    update();
+  } else {
+    // mobile / reduced-motion: reproducir normal en loop (sin scrubbing)
+    sec.style.height="100vh";
+    vid.loop=true; vid.autoplay=true;
+    var play=function(){ vid.play().catch(function(){}); };
+    if(vid.readyState>=2) play(); else vid.addEventListener("canplay",play,{once:true});
+    if(hint) hint.style.display="none";
+    fill.parentNode.style.display="none";
+  }
+})();
+</script>
