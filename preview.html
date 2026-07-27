@@ -1,0 +1,1201 @@
+<meta charset="utf-8">
+<title>Inversiones Generales M&M — vista previa del rediseño</title>
+<style>
+/* ============================================================
+   Inversiones Generales M&M — "Cauce"
+   Sistema visual derivado del espiral de marca: curvas de nivel /
+   contornos como tejido conectivo. Azul marino de autoridad +
+   celeste de marca (#2F9BE0) como campo protagonista.
+   ============================================================ */
+
+/* ---------- Fonts ---------- */
+@font-face { font-display: swap; } /* faces loaded via <link>; system fallback below */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Brand + palette */
+  --celeste: #2F9BE0;
+  --celeste-600: #1D82C6;
+  --celeste-700: #16699F;
+  --celeste-200: #BFE0F6;
+  --celeste-100: #E1F1FB;
+  --celeste-050: #EFF7FD;
+
+  --navy: #0B2237;
+  --navy-800: #123353;
+  --navy-700: #17466C;
+
+  --ink: #0C2338;
+  --ink-soft: #4A657D;      /* secondary text on light — tinted, ≥4.5:1 on white */
+  --ink-faint: #6E869B;     /* tertiary / meta on light — large text only */
+
+  --ground: #F4F7FA;
+  --ground-2: #EAF1F7;
+  --surface: #FFFFFF;
+  --line: #DEE8F1;
+  --line-strong: #C6D6E4;
+
+  /* On dark surfaces */
+  --on-dark: #F3F8FC;
+  --on-dark-soft: #A9C6DD;  /* tinted from celeste, not gray */
+
+  --gold: #E0A93F;          /* single warm accent — used only for "oportunidad" */
+
+  /* Type */
+  --font-display: "Archivo", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Hanken Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --step--1: clamp(0.82rem, 0.79rem + 0.14vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.075rem);
+  --step-1: clamp(1.2rem, 1.12rem + 0.4vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.35rem + 0.75vw, 1.95rem);
+  --step-3: clamp(1.95rem, 1.65rem + 1.5vw, 2.9rem);
+  --step-4: clamp(2.6rem, 2.05rem + 2.75vw, 4.4rem);
+  --step-5: clamp(3.1rem, 2.2rem + 4.5vw, 5.6rem);
+
+  /* Space */
+  --sp-1: 0.4rem;
+  --sp-2: 0.75rem;
+  --sp-3: 1.1rem;
+  --sp-4: 1.6rem;
+  --sp-5: 2.4rem;
+  --sp-6: 3.6rem;
+  --sp-7: 5.5rem;
+  --sp-8: 8rem;
+
+  --r-sm: 9px;
+  --r: 15px;
+  --r-lg: 24px;
+  --r-xl: 34px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(11,34,55,.06), 0 3px 8px rgba(11,34,55,.05);
+  --shadow-md: 0 12px 34px -14px rgba(11,34,55,.26), 0 4px 12px -8px rgba(11,34,55,.14);
+  --shadow-lg: 0 34px 70px -28px rgba(11,34,55,.40), 0 10px 24px -16px rgba(11,34,55,.20);
+  --shadow-cel: 0 20px 44px -20px rgba(29,130,198,.55);
+
+  --wrap: 1200px;
+  --wrap-narrow: 900px;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+/* ---------- Reset / base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--ground);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+::selection { background: var(--celeste); color: #fff; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  margin: 0;
+  color: var(--ink);
+  text-wrap: balance;
+}
+p { margin: 0; }
+
+.wrap { width: min(100% - 2.4rem, var(--wrap)); margin-inline: auto; }
+.wrap-narrow { width: min(100% - 2.4rem, var(--wrap-narrow)); margin-inline: auto; }
+
+/* ---------- Utility: section kicker (a system, used deliberately) ---------- */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--celeste-700);
+  margin: 0 0 var(--sp-2);
+}
+.eyebrow::before {
+  content: ""; width: 26px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--celeste), transparent);
+}
+.on-dark .eyebrow { color: var(--celeste-200); }
+.on-dark .eyebrow::before { background: linear-gradient(90deg, var(--celeste-200), transparent); }
+
+.lede { color: var(--ink-soft); font-size: var(--step-1); line-height: 1.5; max-width: 60ch; }
+.section { padding-block: var(--sp-8); }
+.section-head { max-width: 62ch; margin-bottom: var(--sp-6); }
+.section-head h2 { font-size: var(--step-3); }
+.section-head p { margin-top: var(--sp-3); color: var(--ink-soft); font-size: var(--step-1); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  --bg: var(--celeste);
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  padding: .82rem 1.35rem;
+  border-radius: var(--r-pill);
+  font-family: var(--font-body); font-weight: 600; font-size: var(--step-0);
+  border: 1px solid transparent;
+  background: var(--bg); color: #fff;
+  box-shadow: var(--shadow-cel);
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .25s;
+  will-change: transform;
+}
+.btn:hover { transform: translateY(-2px); background: var(--celeste-600); box-shadow: 0 26px 52px -20px rgba(29,130,198,.7); }
+.btn:active { transform: translateY(0); }
+.btn:focus-visible { outline: 3px solid var(--celeste-200); outline-offset: 2px; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); box-shadow: none; }
+.btn-ghost:hover { background: var(--surface); border-color: var(--celeste); color: var(--celeste-700); box-shadow: var(--shadow-sm); }
+.on-dark .btn-ghost { color: var(--on-dark); border-color: rgba(191,224,246,.35); }
+.on-dark .btn-ghost:hover { background: rgba(255,255,255,.06); border-color: var(--celeste-200); color: #fff; }
+.btn-wa { --bg: #1FA855; box-shadow: 0 20px 44px -20px rgba(31,168,85,.55); }
+.btn-wa:hover { background: #17924a; box-shadow: 0 26px 52px -20px rgba(31,168,85,.7); }
+.btn-lg { padding: 1rem 1.7rem; font-size: var(--step-1); }
+
+.link-arrow { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; color: var(--celeste-700); }
+.link-arrow svg { transition: transform .3s var(--ease); }
+.link-arrow:hover svg { transform: translateX(4px); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 60;
+  background: color-mix(in srgb, var(--ground) 78%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s, background .3s;
+}
+.site-header.scrolled { border-bottom-color: var(--line); background: color-mix(in srgb, var(--ground) 90%, transparent); }
+.nav {
+  display: flex; align-items: center; gap: var(--sp-4);
+  height: 74px;
+}
+.brand { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em; color: var(--ink); }
+.brand .mark { width: 38px; height: 38px; color: var(--celeste); flex: none; transition: transform .8s var(--ease); }
+.brand:hover .mark { transform: rotate(140deg); }
+.brand .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+.brand .brand-text b { font-size: 1.02rem; }
+.brand .brand-text span { font-family: var(--font-body); font-weight: 500; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.nav-links { display: flex; gap: var(--sp-4); margin-left: auto; }
+.nav-links a { font-weight: 500; color: var(--ink-soft); position: relative; padding: .3rem 0; transition: color .2s; }
+.nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-2px; height:2px; background: var(--celeste); border-radius:2px; transition: right .3s var(--ease); }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { right: 0; }
+.nav-cta { display: flex; align-items: center; gap: .6rem; }
+.nav-toggle { display: none; }
+.mobile-menu { display: none; }
+
+/* mobile nav */
+@media (max-width: 900px) {
+  .nav-links, .nav-cta .btn-ghost { display: none; }
+  .nav-toggle {
+    display: inline-flex; margin-left: auto; width: 46px; height: 46px; align-items: center; justify-content: center;
+    border-radius: 12px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink);
+  }
+  .mobile-menu {
+    position: fixed; inset: 74px 0 auto 0; z-index: 55;
+    background: var(--surface); border-bottom: 1px solid var(--line);
+    padding: var(--sp-4) var(--sp-4) var(--sp-5);
+    display: grid; gap: .2rem;
+    transform: translateY(-8px); opacity: 0; pointer-events: none;
+    transition: transform .3s var(--ease), opacity .3s;
+    box-shadow: var(--shadow-md);
+  }
+  .mobile-menu.open { transform: none; opacity: 1; pointer-events: auto; }
+  .mobile-menu a { padding: .85rem .4rem; font-family: var(--font-display); font-size: 1.25rem; border-bottom: 1px solid var(--line); }
+  .mobile-menu .btn { margin-top: var(--sp-3); }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; overflow: hidden;
+  background: radial-gradient(120% 120% at 80% -10%, #14395B 0%, var(--navy) 55%, #081a2c 100%);
+  color: var(--on-dark);
+  isolation: isolate;
+}
+.hero canvas.contours { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: .9; }
+.hero::after { /* vignette to protect text contrast */
+  content:""; position:absolute; inset:0; z-index:-1;
+  background: linear-gradient(100deg, rgba(6,20,34,.86) 0%, rgba(6,20,34,.5) 42%, rgba(6,20,34,.05) 78%);
+}
+.hero-inner { padding-block: clamp(3.5rem, 8vh, 7rem) clamp(4rem, 9vh, 8rem); display: grid; gap: var(--sp-5); }
+.hero h1 { color: #fff; font-size: var(--step-5); font-weight: 800; letter-spacing: -.035em; max-width: 15ch; }
+.hero h1 em { font-style: normal; color: var(--celeste); }
+.hero .lede { color: var(--on-dark-soft); font-size: var(--step-1); max-width: 52ch; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; align-items: center; color: var(--on-dark-soft); font-size: var(--step--1); }
+.hero-badges b { color: #fff; font-weight: 600; }
+.hero-badge { display: inline-flex; align-items: center; gap: .5rem; }
+.hero-badge svg { color: var(--celeste); width: 18px; height: 18px; }
+
+/* Search panel — the primary action */
+.search {
+  background: rgba(255,255,255,.96);
+  border-radius: var(--r-lg);
+  padding: .7rem;
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: .4rem;
+  max-width: 860px;
+}
+.search .field { position: relative; display: flex; flex-direction: column; padding: .55rem .9rem; border-radius: var(--r); transition: background .2s; }
+.search .field + .field { border-left: 1px solid var(--line); }
+.search .field:focus-within { background: var(--celeste-050); }
+.search label { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: .15rem; }
+.search select, .search input {
+  border: none; background: transparent; font: inherit; font-weight: 600; color: var(--ink);
+  padding: 0; width: 100%; appearance: none; outline: none;
+}
+.search .field.select::after { content:""; position:absolute; right: .9rem; bottom: 1.05rem; width:11px; height:7px; background: var(--ink-soft); clip-path: polygon(0 0, 100% 0, 50% 100%); pointer-events:none; }
+.search .btn { border-radius: var(--r); align-self: stretch; padding-inline: 1.5rem; }
+@media (max-width: 720px) {
+  .search { grid-template-columns: 1fr 1fr; }
+  .search .field + .field { border-left: none; }
+  .search .field:nth-child(odd) { border-right: 1px solid var(--line); }
+  .search .btn { grid-column: 1 / -1; }
+}
+
+/* ---------- Demo ribbon ---------- */
+.demo-note {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: var(--step--1); font-weight: 600; color: var(--gold);
+  background: rgba(224,169,63,.12); border: 1px solid rgba(224,169,63,.3);
+  padding: .35rem .7rem; border-radius: var(--r-pill);
+}
+.demo-note::before { content:""; width:7px; height:7px; border-radius:50%; background: var(--gold); }
+
+/* ---------- Stats strip ---------- */
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-5);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  margin-top: calc(var(--sp-6) * -1); position: relative; z-index: 2;
+}
+.stats .stat b { display:block; font-family: var(--font-display); font-size: var(--step-3); color: var(--navy); letter-spacing: -.03em; }
+.stats .stat span { color: var(--ink-soft); font-size: var(--step--1); }
+@media (max-width: 720px){ .stats { grid-template-columns: repeat(2,1fr); } }
+
+/* ---------- Property cards ---------- */
+.prop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+@media (max-width: 980px){ .prop-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 620px){ .prop-grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s;
+  display: flex; flex-direction: column;
+}
+.card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--celeste-200); }
+.card-media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--ground-2); }
+.card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.card:hover .card-media img { transform: scale(1.06); }
+.card-tags { position: absolute; top: .8rem; left: .8rem; display: flex; gap: .4rem; }
+.tag { font-size: .72rem; font-weight: 700; letter-spacing: .02em; padding: .3rem .6rem; border-radius: var(--r-pill); background: rgba(11,34,55,.72); color: #fff; backdrop-filter: blur(4px); }
+.tag.venta { background: var(--celeste); }
+.tag.alquiler { background: var(--navy-700); }
+.tag.oportunidad { background: var(--gold); color: #2a1e05; }
+.card-fav { position:absolute; top:.7rem; right:.7rem; width:38px; height:38px; border-radius:50%; background: rgba(255,255,255,.9); display:grid; place-items:center; border:none; color: var(--ink-soft); box-shadow: var(--shadow-sm); transition: color .2s, transform .3s var(--ease); }
+.card-fav:hover { color: var(--celeste); transform: scale(1.1); }
+.card-body { padding: var(--sp-4); display: flex; flex-direction: column; gap: .55rem; flex: 1; }
+.card-price { font-family: var(--font-display); font-size: var(--step-2); color: var(--navy); letter-spacing: -.03em; }
+.card-price small { font-size: .8rem; font-weight: 600; color: var(--ink-faint); letter-spacing: 0; }
+.card-title { font-family: var(--font-body); font-weight: 600; font-size: var(--step-0); color: var(--ink); }
+.card-loc { display:flex; align-items:center; gap:.4rem; color: var(--ink-soft); font-size: var(--step--1); }
+.card-loc svg { width:15px;height:15px;color:var(--celeste);flex:none; }
+.card-specs { margin-top: auto; padding-top: var(--sp-3); border-top: 1px solid var(--line); display:flex; gap: var(--sp-3); color: var(--ink-soft); font-size: var(--step--1); }
+.card-specs span { display:inline-flex; align-items:center; gap:.35rem; }
+.card-specs svg { width:16px; height:16px; color: var(--ink-faint); }
+
+/* ---------- Servicios (contoured list, not icon-cards) ---------- */
+.servicios { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.serv-list { display: grid; gap: 0; }
+.serv-row {
+  display: grid; grid-template-columns: auto 1fr auto; gap: var(--sp-4); align-items: center;
+  padding: var(--sp-5) var(--sp-2); border-top: 1px solid var(--line);
+  transition: background .3s var(--ease);
+}
+.serv-row:hover { background: var(--celeste-050); }
+.serv-num { font-family: var(--font-display); font-size: var(--step-2); color: var(--celeste); font-weight: 700; width: 3ch; transition: transform .3s var(--ease); }
+.serv-row:hover .serv-num { transform: translateX(8px); }
+.serv-main h3 { font-size: var(--step-2); }
+.serv-main p { color: var(--ink-soft); margin-top: .35rem; max-width: 62ch; }
+.serv-row .link-arrow { white-space: nowrap; }
+@media (max-width: 700px){ .serv-row { grid-template-columns: auto 1fr; } .serv-row .link-arrow { grid-column: 2; } }
+
+/* ---------- Zonas ---------- */
+.zonas-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--sp-5); align-items: stretch; }
+.zonas-map {
+  position: relative; border-radius: var(--r-xl); overflow: hidden; min-height: 420px;
+  background: radial-gradient(120% 120% at 70% 10%, #14395B, var(--navy)); color: var(--on-dark);
+  box-shadow: var(--shadow-lg);
+}
+.zonas-map canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.85; }
+.zonas-map .zonas-cap { position: absolute; left: var(--sp-5); bottom: var(--sp-5); right: var(--sp-5); }
+.zonas-map .zonas-cap h3 { color:#fff; font-size: var(--step-2); }
+.zonas-map .zonas-cap p { color: var(--on-dark-soft); margin-top:.4rem; }
+.zona-chips { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; align-content: start; }
+.zona-chip {
+  display:flex; flex-direction:column; gap:.15rem; padding: var(--sp-4); border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--line); transition: transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.zona-chip:hover { transform: translateY(-3px); border-color: var(--celeste-200); box-shadow: var(--shadow-sm); }
+.zona-chip b { font-family: var(--font-display); font-size: var(--step-1); color: var(--ink); }
+.zona-chip span { color: var(--ink-soft); font-size: var(--step--1); }
+@media (max-width: 860px){ .zonas-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Proceso ---------- */
+.proceso { background: var(--navy); color: var(--on-dark); position: relative; overflow:hidden; }
+.proceso canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.5; z-index:0; }
+.proceso .wrap { position: relative; z-index: 1; }
+.proceso h2 { color:#fff; }
+.proceso .section-head p { color: var(--on-dark-soft); }
+.pasos { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-4); }
+.paso { padding-top: var(--sp-4); border-top: 2px solid rgba(191,224,246,.25); position: relative; }
+.paso::before { content:""; position:absolute; top:-2px; left:0; width:40%; height:2px; background: var(--celeste); }
+.paso .n { font-family: var(--font-display); color: var(--celeste-200); font-weight:700; font-size: var(--step--1); letter-spacing:.1em; }
+.paso h3 { color:#fff; font-size: var(--step-1); margin-top:.5rem; }
+.paso p { color: var(--on-dark-soft); margin-top:.5rem; font-size: var(--step-0); }
+@media (max-width: 820px){ .pasos { grid-template-columns: 1fr 1fr; gap: var(--sp-5);} }
+@media (max-width: 480px){ .pasos { grid-template-columns: 1fr; } }
+
+/* ---------- Confianza / valores ---------- */
+.valores { display:grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); align-items:center; }
+.valores-list { display:grid; gap: var(--sp-4); }
+.valor { display:grid; grid-template-columns: auto 1fr; gap: var(--sp-3); }
+.valor .ic { width:52px; height:52px; border-radius: 15px; display:grid; place-items:center; background: var(--celeste-050); color: var(--celeste-700); border:1px solid var(--celeste-100); flex:none; }
+.valor h3 { font-size: var(--step-1); }
+.valor p { color: var(--ink-soft); margin-top:.3rem; }
+.valores-figure { position: relative; border-radius: var(--r-xl); overflow:hidden; aspect-ratio: 4/5; box-shadow: var(--shadow-lg); background: var(--ground-2); }
+.valores-figure img { width:100%; height:100%; object-fit:cover; }
+.valores-figure .fig-badge { position:absolute; left: var(--sp-4); bottom: var(--sp-4); background: rgba(255,255,255,.95); border-radius: var(--r); padding: var(--sp-3) var(--sp-4); box-shadow: var(--shadow-md); max-width: 78%; }
+.valores-figure .fig-badge b { font-family:var(--font-display); color: var(--navy); display:block; }
+.valores-figure .fig-badge span { color: var(--ink-soft); font-size: var(--step--1); }
+@media (max-width: 860px){ .valores { grid-template-columns: 1fr; } .valores-figure{ aspect-ratio: 16/11; order:-1;} }
+
+/* ---------- Contacto / CTA ---------- */
+.contacto { position: relative; overflow: hidden; background: radial-gradient(120% 140% at 10% 0%, #14395B, var(--navy) 60%, #081a2c); color: var(--on-dark); }
+.contacto canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.55; }
+.contacto .wrap { position: relative; z-index:1; }
+.contacto-grid { display:grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); align-items: start; }
+.contacto h2 { color:#fff; font-size: var(--step-3); }
+.contacto .lede { color: var(--on-dark-soft); margin-top: var(--sp-3); }
+.contact-methods { margin-top: var(--sp-5); display:grid; gap: var(--sp-3); }
+.cmethod { display:flex; align-items:center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--r); background: rgba(255,255,255,.05); border:1px solid rgba(191,224,246,.16); transition: background .25s, border-color .25s; }
+.cmethod:hover { background: rgba(255,255,255,.09); border-color: rgba(191,224,246,.4); }
+.cmethod .ic { width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background: rgba(47,155,224,.2); color: var(--celeste-200); flex:none; }
+.cmethod b { color:#fff; display:block; font-weight:600; }
+.cmethod span { color: var(--on-dark-soft); font-size: var(--step--1); }
+.form-card { background: var(--surface); border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--shadow-lg); color: var(--ink); }
+.form-card h3 { font-size: var(--step-1); }
+.form-row { display:grid; gap: var(--sp-3); margin-top: var(--sp-4); }
+.form-2 { grid-template-columns: 1fr 1fr; }
+.field-l { display:flex; flex-direction:column; gap:.35rem; }
+.field-l label { font-size: var(--step--1); font-weight:600; color: var(--ink-soft); }
+.field-l input, .field-l select, .field-l textarea {
+  font: inherit; padding: .8rem .95rem; border-radius: var(--r); border:1px solid var(--line-strong); background: var(--ground);
+  color: var(--ink); transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.field-l input:focus, .field-l select:focus, .field-l textarea:focus { outline:none; border-color: var(--celeste); background:#fff; box-shadow: 0 0 0 4px var(--celeste-050); }
+.field-l textarea { resize: vertical; min-height: 96px; }
+.form-card .btn { width:100%; margin-top: var(--sp-4); }
+.form-fine { color: var(--ink-faint); font-size: var(--step--1); margin-top: var(--sp-3); text-align:center; }
+@media (max-width: 860px){ .contacto-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px){ .form-2 { grid-template-columns: 1fr; } }
+
+/* ---------- Footer ---------- */
+.site-footer { background: #071726; color: var(--on-dark-soft); padding-block: var(--sp-7) var(--sp-5); }
+.footer-top { display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: var(--sp-5); }
+.footer-brand .brand { color: #fff; }
+.footer-brand .brand .brand-text span { color: var(--on-dark-soft); }
+.footer-brand p { margin-top: var(--sp-3); max-width: 34ch; color: var(--on-dark-soft); }
+.footer-social { display:flex; gap:.6rem; margin-top: var(--sp-4); }
+.footer-social a { width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background: rgba(255,255,255,.06); color:#fff; transition: background .25s, transform .3s var(--ease); }
+.footer-social a:hover { background: var(--celeste); transform: translateY(-3px); }
+.footer-col h4 { color:#fff; font-family: var(--font-body); font-size: var(--step--1); letter-spacing:.08em; text-transform:uppercase; margin-bottom: var(--sp-3); }
+.footer-col a { display:block; padding:.3rem 0; color: var(--on-dark-soft); transition: color .2s; }
+.footer-col a:hover { color:#fff; }
+.footer-bottom { margin-top: var(--sp-6); padding-top: var(--sp-4); border-top:1px solid rgba(255,255,255,.09); display:flex; flex-wrap:wrap; gap: var(--sp-2) var(--sp-4); justify-content: space-between; font-size: var(--step--1); }
+@media (max-width: 820px){ .footer-top { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px){ .footer-top { grid-template-columns: 1fr; } }
+
+/* ---------- Reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity:1; transform:none; transition:none; } .card:hover, .btn:hover { transform:none; } }
+
+/* ---------- Page hero (interior pages) ---------- */
+.page-hero { background: radial-gradient(120% 120% at 85% -20%, #14395B, var(--navy) 60%, #081a2c); color: var(--on-dark); position: relative; overflow:hidden; }
+.page-hero canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.7; z-index:0; }
+.page-hero .wrap { position: relative; z-index:1; padding-block: var(--sp-7); }
+.page-hero h1 { color:#fff; font-size: var(--step-4); max-width: 18ch; }
+.page-hero p { color: var(--on-dark-soft); margin-top: var(--sp-3); font-size: var(--step-1); max-width: 56ch; }
+#d-loc { color: var(--on-dark-soft); font-size: var(--step-1); }
+#d-loc svg { width: 20px; height: 20px; color: var(--celeste-200); flex: none; }
+.breadcrumb { display:flex; gap:.5rem; align-items:center; color: var(--on-dark-soft); font-size: var(--step--1); margin-bottom: var(--sp-4); }
+.breadcrumb a:hover { color:#fff; }
+
+/* ---------- Filters (catalog) ---------- */
+.filters { display:flex; flex-wrap:wrap; gap:.7rem; align-items:center; padding: var(--sp-4); background: var(--surface); border:1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--sp-5); }
+.filters select { font:inherit; font-weight:600; padding:.7rem 2.2rem .7rem .9rem; border-radius: var(--r-pill); border:1px solid var(--line-strong); background: var(--ground); color: var(--ink);
+  appearance:none; background-image: linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%), linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%);
+  background-position: calc(100% - 1.1rem) 1.1rem, calc(100% - .8rem) 1.1rem; background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; }
+.filters .count { margin-left:auto; color: var(--ink-soft); font-size: var(--step--1); }
+.filters .count b { color: var(--ink); }
+@media (max-width:620px){ .filters .count { width:100%; margin-left:0; } }
+
+.no-results { text-align:center; padding: var(--sp-7); color: var(--ink-soft); }
+
+/* ---------- Property detail ---------- */
+.detail-gallery { display:grid; grid-template-columns: 2fr 1fr; gap: .7rem; border-radius: var(--r-xl); overflow:hidden; }
+.detail-gallery img { width:100%; height:100%; object-fit:cover; }
+.detail-gallery .g-main { aspect-ratio: 3/2; }
+.detail-gallery .g-side { display:grid; grid-template-rows: 1fr 1fr; gap:.7rem; }
+.detail-gallery .g-side img { aspect-ratio: 3/2; }
+@media (max-width: 760px){ .detail-gallery { grid-template-columns: 1fr; } .detail-gallery .g-side { grid-template-columns:1fr 1fr; grid-template-rows:none; } }
+.detail-grid { display:grid; grid-template-columns: 1.6fr 1fr; gap: var(--sp-6); margin-top: var(--sp-6); align-items:start; }
+@media (max-width: 900px){ .detail-grid { grid-template-columns:1fr; } }
+.detail-facts { display:grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-3); margin: var(--sp-5) 0; }
+.detail-facts .f { padding: var(--sp-3); border:1px solid var(--line); border-radius: var(--r); text-align:center; background: var(--surface); }
+.detail-facts .f b { display:block; font-family:var(--font-display); font-size: var(--step-1); color: var(--navy); }
+.detail-facts .f span { color: var(--ink-soft); font-size: var(--step--1); }
+@media (max-width:520px){ .detail-facts { grid-template-columns:1fr 1fr; } }
+.detail-aside { position: sticky; top: 92px; background: var(--surface); border:1px solid var(--line); border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--shadow-md); }
+.detail-aside .price { font-family:var(--font-display); font-size: var(--step-3); color: var(--navy); }
+.amenities { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top: var(--sp-4); }
+.amenities li { list-style:none; display:flex; gap:.5rem; align-items:center; color: var(--ink-soft); font-size: var(--step-0); }
+.amenities svg { color: var(--celeste); width:18px;height:18px; flex:none; }
+
+body{padding-bottom:48px}
+</style>
+<a id="top"></a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="mm-mark" viewBox="0 0 512 512"><path d="M 240.70 214.09 L 243.71 211.96 L 246.95 210.06 L 250.42 208.40 L 254.10 207.00 L 257.95 205.90 L 261.97 205.10 L 266.12 204.64 L 270.38 204.52 L 274.71 204.75 L 279.10 205.36 L 283.50 206.34 L 287.88 207.70 L 292.22 209.46 L 296.47 211.59 L 300.61 214.12 L 304.59 217.02 L 308.38 220.29 L 311.96 223.92 L 315.28 227.89 L 318.32 232.19 L 321.04 236.79 L 323.41 241.67 L 325.42 246.81 L 327.03 252.18 L 328.21 257.73 L 328.96 263.45 L 329.25 269.30 L 329.06 275.23 L 328.39 281.21 L 327.22 287.21 L 325.56 293.17 L 323.39 299.05 L 320.72 304.83 L 317.56 310.44 L 313.91 315.85 L 309.79 321.02 L 305.21 325.91 L 300.19 330.47 L 294.75 334.67 L 288.93 338.47 L 282.75 341.84 L 276.25 344.73 L 269.45 347.13 L 262.40 349.00 L 255.15 350.33 L 247.72 351.07 L 240.18 351.23 L 232.56 350.79 L 224.92 349.73 L 217.30 348.05 L 209.76 345.74 L 202.34 342.82 L 195.10 339.28 L 188.10 335.13 L 181.37 330.40 L 174.97 325.09 L 168.96 319.23 L 163.36 312.85 L 158.24 305.99 L 153.63 298.66 L 149.58 290.92 L 146.11 282.81 L 143.27 274.37 L 141.08 265.64 L 139.58 256.69 L 138.77 247.56 L 138.69 238.31 L 139.34 229.00 L 140.74 219.68 L 142.89 210.42 L 145.78 201.28 L 149.42 192.31 L 153.79 183.58 L 158.88 175.15 L 164.66 167.08 L 171.12 159.42 L 178.22 152.23 L 185.93 145.57 L 194.20 139.48 L 203.01 134.02 L 212.29 129.22 L 221.99 125.14 L 232.07 121.81 L 242.46 119.25 L 253.11 117.51 L 263.94 116.60 L 274.90 116.55 L 285.91 117.36 L 296.91 119.04 L 307.83 121.60 L 318.59 125.04 L 329.13 129.35 L 339.38 134.50 L 349.27 140.49 L 358.72 147.28 L 367.68 154.85 L 376.07 163.16 L 383.85 172.17 L 390.94 181.82 L 397.31 192.08 L 402.89 202.88 L 407.64 214.16 L 411.51 225.86 L 414.48 237.91 L 416.51 250.24 L 417.58 262.78 L 417.66 275.45 L 416.74 288.17 L 414.82 300.87 L 411.89 313.46 L 407.96 325.86 L 403.03 337.99 L 397.14 349.78 L 390.29 361.15 L 382.53 372.01 L 373.88 382.30 L 364.40 391.95 L 354.13 400.87 L 343.12 409.02 L 331.43 416.33 L 319.14 422.74 L 306.30 428.20 L 292.99 432.67 L 279.29 436.11 L 265.28 438.47 L 251.04 439.75 L 236.66 439.91 L 222.22 438.93 L 207.83 436.82 L 193.55 433.57 L 179.50 429.19 L 165.74 423.70 L 152.39 417.11 L 139.51 409.45 L 127.21 400.76 L 115.55 391.07 L 104.62 380.45 L 94.50 368.95 L 85.26 356.61 L 76.97 343.53 L 69.68 329.76 L 63.46 315.38 L 58.35 300.48 L 54.39 285.14 L 51.64 269.46 L 50.10 253.52 L 49.82 237.43 L 50.80 221.28 L 53.04 205.17 L 56.56 189.20 L 61.34 173.47 L 67.36 158.08 L 74.60 143.14 L 83.03 128.73 L 92.61 114.95 L 103.29 101.89 L 115.01 89.65 L 127.72 78.30 L 141.34 67.92 L 155.80 58.59 L 171.03 50.38 L 186.92 43.35 L 203.40 37.55 L 220.36 33.03 L 237.70 29.84 L 255.33 28.00 L 273.14 27.53 L 291.01 28.46 L 308.84 30.79 L 326.51 34.53 L 343.93 39.66 L 360.97 46.15 L 377.53 54.00 L 393.50 63.16 L 408.78 73.58 L 423.27 85.21 L 436.87 98.00 L 449.48 111.88 L 461.03 126.76 L 471.43 142.57 L 480.61 159.22 L 488.50 176.61 L 495.04 194.64 L 500.17 213.21 L 503.86 232.21 L 506.06 251.53 L 506.76 271.04 L 505.92 290.63 L 503.55 310.19 L 499.65 329.58 L 494.23 348.69 L 487.30 367.41 L 478.90 385.60 L 469.06 403.16 L 457.84 419.97 L 445.28 435.92 L 431.47 450.90 L 416.47 464.83 L 400.35 477.59 L 383.23 489.11 L 365.18 499.30 L 346.31 508.09 L 326.74 515.41 L 306.57 521.21 L 285.93 525.43 L 264.94 528.05 L 243.72 529.03 L 222.41 528.34 L 201.12 525.99 L 180.00 521.97 L 192.26 479.07 L 210.01 482.27 L 227.87 484.06 L 245.73 484.45 L 263.47 483.46 L 281.01 481.09 L 298.22 477.38 L 315.00 472.37 L 331.27 466.09 L 346.91 458.59 L 361.85 449.95 L 376.00 440.21 L 389.28 429.45 L 401.62 417.75 L 412.95 405.18 L 423.21 391.83 L 432.35 377.80 L 440.33 363.17 L 447.10 348.05 L 452.65 332.51 L 456.94 316.68 L 459.97 300.65 L 461.73 284.51 L 462.22 268.37 L 461.45 252.32 L 459.45 236.47 L 456.23 220.91 L 451.82 205.73 L 446.28 191.03 L 439.64 176.87 L 431.96 163.35 L 423.29 150.55 L 413.70 138.53 L 403.27 127.35 L 392.05 117.09 L 380.13 107.78 L 367.60 99.48 L 354.53 92.23 L 341.01 86.06 L 327.13 80.99 L 312.98 77.04 L 298.65 74.23 L 284.22 72.56 L 269.80 72.02 L 255.46 72.61 L 241.30 74.31 L 227.40 77.09 L 213.84 80.93 L 200.71 85.78 L 188.07 91.62 L 176.00 98.38 L 164.57 106.02 L 153.83 114.47 L 143.86 123.68 L 134.69 133.58 L 126.38 144.10 L 118.97 155.17 L 112.48 166.71 L 106.96 178.64 L 102.41 190.89 L 98.87 203.37 L 96.32 216.01 L 94.79 228.72 L 94.25 241.43 L 94.72 254.06 L 96.16 266.53 L 98.55 278.76 L 101.87 290.68 L 106.09 302.23 L 111.16 313.33 L 117.05 323.93 L 123.70 333.96 L 131.07 343.38 L 139.09 352.12 L 147.71 360.15 L 156.86 367.42 L 166.49 373.91 L 176.52 379.58 L 186.89 384.41 L 197.52 388.38 L 208.35 391.49 L 219.31 393.71 L 230.33 395.06 L 241.33 395.54 L 252.24 395.15 L 263.01 393.92 L 273.57 391.86 L 283.85 389.00 L 293.79 385.38 L 303.34 381.01 L 312.44 375.96 L 321.04 370.25 L 329.11 363.93 L 336.58 357.06 L 343.44 349.69 L 349.64 341.86 L 355.16 333.64 L 359.98 325.09 L 364.07 316.26 L 367.42 307.22 L 370.03 298.03 L 371.88 288.74 L 372.99 279.42 L 373.36 270.12 L 373.00 260.91 L 371.93 251.84 L 370.15 242.97 L 367.71 234.35 L 364.63 226.03 L 360.93 218.05 L 356.66 210.47 L 351.85 203.32 L 346.54 196.63 L 340.78 190.45 L 334.61 184.80 L 328.08 179.71 L 321.24 175.20 L 314.14 171.29 L 306.82 167.98 L 299.35 165.30 L 291.78 163.23 L 284.14 161.79 L 276.50 160.97 L 268.91 160.76 L 261.40 161.14 L 254.04 162.12 L 246.86 163.65 L 239.90 165.73 L 233.21 168.32 L 226.83 171.40 L 220.78 174.94 L 215.11 178.90 L 209.83 183.24 L 204.98 187.93 L 200.57 192.93 L 196.63 198.20 L 193.17 203.70 L 190.20 209.38 L 187.72 215.20 L 185.74 221.12 L 184.27 227.10 L 183.30 233.09 L 182.81 239.06 L 182.81 244.96 L 183.27 250.76 L 184.19 256.43 L 185.54 261.91 L 187.31 267.19 L 189.46 272.23 L 191.97 277.01 L 194.82 281.50 L 197.97 285.67 L 201.39 289.52 L 205.05 293.01 L 208.92 296.14 L 212.97 298.90 L 217.15 301.27 L 221.44 303.26 L 225.80 304.87 L 230.19 306.08 L 234.59 306.92 L 238.96 307.38 L 243.27 307.48 L 247.49 307.22 L 251.59 306.63 L 255.55 305.71 L 259.34 304.49 L 262.94 303.00 L 266.32 301.24 L 269.48 299.24 L 272.39 297.04 L 275.04 294.65 L 277.42 292.10 L 279.53 289.43 L 281.35 286.65 L 282.89 283.79 L 284.14 280.88 L 285.10 277.96 L 285.79 275.03 L 286.21 272.14 L 286.36 269.30 L 286.26 266.54 L 285.91 263.87 L 285.35 261.33 L 284.58 258.92 L 283.61 256.66 L 282.48 254.57 L 281.19 252.67 L 279.77 250.95 L 278.25 249.43 L 276.64 248.11 L 274.97 247.01 L 273.25 246.11 L 271.52 245.42 L 269.79 244.94 L 268.08 244.66 L 266.42 244.57 L 264.82 244.67 L 263.30 244.94 L 261.89 245.37 L 260.58 245.95 L 259.41 246.66 L 258.38 247.49 L 257.49 248.41 L 256.77 249.42 L 256.22 250.48 L 255.83 251.58 L 255.61 252.71 L 255.57 253.83 L 255.70 254.94 L 256.00 256.00 Z" fill="currentColor"/></symbol></svg>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Inversiones Generales M&M — inicio">
+      <svg class="mark" viewBox="0 0 512 512" aria-hidden="true"><use href="#mm-mark"/></svg>
+      <span class="brand-text"><b>Inversiones M&amp;M</b><span>Agentes inmobiliarios</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Navegación principal">
+      <a href="#destacados">Propiedades</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#zonas">Zonas</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#contacto">Tasá tu propiedad</a>
+      <a class="btn btn-wa" data-wa="Hola M&M, quiero hacer una consulta sobre una propiedad." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20Zm4.5-5.9c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2.1-.2 0-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.2.7 3 .6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.2Z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#destacados">Propiedades</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#zonas">Zonas</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+    <a class="btn btn-wa" data-wa="Hola M&M, quiero hacer una consulta." target="_blank" rel="noopener">Escribinos por WhatsApp</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <canvas class="contours" data-contours data-focal-x="0.84" data-focal-y="0.08" data-alpha="0.6" data-gap="34" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <div class="reveal">
+        <span class="eyebrow">Inmobiliaria en Córdoba, Argentina</span>
+        <h1>Encontrá dónde <em>invertir</em> y dónde vivir.</h1>
+        <p class="lede">Seleccionamos propiedades y terrenos en toda Córdoba y te acompañamos en cada paso: comprar, vender, tasar o administrar, con criterio y transparencia.</p>
+      </div>
+
+      <form class="search reveal" id="hero-search" role="search" aria-label="Buscar propiedades">
+        <div class="field select">
+          <label for="s-op">Operación</label>
+          <select id="s-op" name="operacion">
+            <option value="venta">Comprar</option>
+            <option value="alquiler">Alquilar</option>
+          </select>
+        </div>
+        <div class="field select">
+          <label for="s-tipo">Tipo</label>
+          <select id="s-tipo" name="tipo">
+            <option value="">Todos</option>
+            <option value="casa">Casas</option>
+            <option value="departamento">Departamentos</option>
+            <option value="lote">Lotes</option>
+            <option value="campo">Casas quinta / Campos</option>
+          </select>
+        </div>
+        <div class="field select">
+          <label for="s-zona">Zona</label>
+          <select id="s-zona" name="zona">
+            <option value="">Toda Córdoba</option>
+            <option>Nueva Córdoba</option>
+            <option>Cerro de las Rosas</option>
+            <option>Güemes</option>
+            <option>Villa Allende</option>
+            <option>Valle Escondido</option>
+            <option>Mendiolaza</option>
+            <option>Alta Córdoba</option>
+            <option>Barrio Jardín</option>
+          </select>
+        </div>
+        <button class="btn" type="submit">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          Buscar
+        </button>
+      </form>
+
+      <div class="hero-badges reveal">
+        <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Compra · Venta · Alquiler</b></span>
+        <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M2 12h20"/></svg> Tasaciones y asesoramiento</span>
+        <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg> Del centro a las sierras</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORY QUICK-NAV (overlapping) -->
+  <div class="wrap">
+    <nav class="stats reveal" aria-label="Buscar por tipo">
+      <a class="stat" href="#destacados" style="text-decoration:none">
+        <b>Casas</b><span>Familiares y de categoría →</span>
+      </a>
+      <a class="stat" href="#destacados" style="text-decoration:none">
+        <b>Departamentos</b><span>A estrenar y usados →</span>
+      </a>
+      <a class="stat" href="#destacados" style="text-decoration:none">
+        <b>Lotes</b><span>Countries y urbanos →</span>
+      </a>
+      <a class="stat" href="#destacados" style="text-decoration:none">
+        <b>Campos</b><span>Casas quinta y sierras →</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- DESTACADOS -->
+  <section class="section" id="destacados">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Selección M&amp;M</span>
+        <h2>Propiedades destacadas</h2>
+        <p>Una muestra del tipo de oportunidades que trabajamos en Córdoba, elegidas por ubicación, potencial y calidad constructiva.</p>
+        <p style="margin-top:var(--sp-3)"><span class="demo-note">Propiedades de demostración — se reemplazan por tu inventario real</span></p>
+      </div>
+      <div class="prop-grid" id="destacados-grid"></div>
+      <div style="text-align:center;margin-top:var(--sp-6)">
+        <a class="btn btn-ghost btn-lg" href="#destacados">Ver todas las propiedades</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="section servicios" id="servicios">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Qué hacemos</span>
+        <h2>Un solo socio para toda la operación</h2>
+        <p>Desde la primera consulta hasta la firma, con un equipo que conoce el mercado cordobés.</p>
+      </div>
+      <div class="serv-list">
+        <div class="serv-row reveal">
+          <div class="serv-num">01</div>
+          <div class="serv-main"><h3>Compra</h3><p>Te ayudamos a encontrar la propiedad o el terreno indicado, verificamos la documentación y negociamos las mejores condiciones por vos.</p></div>
+          <a class="link-arrow" href="#destacados">Ver en venta <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="serv-row reveal">
+          <div class="serv-num">02</div>
+          <div class="serv-main"><h3>Venta</h3><p>Publicamos, fotografiamos y difundimos tu propiedad con una estrategia clara para venderla en el mejor tiempo y valor.</p></div>
+          <a class="link-arrow" href="#contacto">Vender con M&amp;M <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="serv-row reveal">
+          <div class="serv-num">03</div>
+          <div class="serv-main"><h3>Tasación</h3><p>Valuamos tu propiedad con datos reales del mercado de Córdoba para que tomes decisiones con información, no con corazonadas.</p></div>
+          <a class="link-arrow" href="#contacto">Solicitar tasación <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="serv-row reveal">
+          <div class="serv-num">04</div>
+          <div class="serv-main"><h3>Administración</h3><p>Gestionamos alquileres y contratos de principio a fin: cobranzas, mantenimiento y tranquilidad para propietarios e inquilinos.</p></div>
+          <a class="link-arrow" href="#contacto">Consultar <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONAS -->
+  <section class="section" id="zonas">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Dónde operamos</span>
+        <h2>Córdoba, zona por zona</h2>
+        <p>Conocemos el pulso de cada barrio y localidad, del corazón de la ciudad al verde de las sierras.</p>
+      </div>
+      <div class="zonas-grid">
+        <div class="zonas-map reveal">
+          <canvas data-contours data-focal-x="0.32" data-focal-y="0.42" data-alpha="0.7" data-gap="26" data-tint="#57B4EC" aria-hidden="true"></canvas>
+          <div class="zonas-cap">
+            <h3>Del centro a las sierras</h3>
+            <p>Ciudad de Córdoba, Sierras Chicas y Punilla. Elegí una zona y mirá lo disponible.</p>
+          </div>
+        </div>
+        <div class="zona-chips">
+          <a class="zona-chip reveal" href="#destacados"><b>Nueva Córdoba</b><span>Vida urbana y estudiantil</span></a>
+          <a class="zona-chip reveal" href="#destacados"><b>Cerro de las Rosas</b><span>Residencial premium</span></a>
+          <a class="zona-chip reveal" href="#destacados"><b>Güemes</b><span>Gastronomía y arte</span></a>
+          <a class="zona-chip reveal" href="#destacados"><b>Villa Allende</b><span>Sierras Chicas</span></a>
+          <a class="zona-chip reveal" href="#destacados"><b>Valle Escondido</b><span>Barrios cerrados</span></a>
+          <a class="zona-chip reveal" href="#destacados"><b>Mendiolaza</b><span>Verde y tranquilidad</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="section proceso">
+    <canvas data-contours data-focal-x="0.9" data-focal-y="0.9" data-alpha="0.45" data-gap="40" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Cómo trabajamos</span>
+        <h2>Un camino claro, sin sorpresas</h2>
+      </div>
+      <div class="pasos">
+        <div class="paso reveal"><div class="n">PASO 01</div><h3>Charlamos</h3><p>Entendemos qué buscás o qué querés vender, tu presupuesto y tus tiempos.</p></div>
+        <div class="paso reveal"><div class="n">PASO 02</div><h3>Seleccionamos</h3><p>Te acercamos opciones que encajan de verdad, o preparamos tu propiedad para salir al mercado.</p></div>
+        <div class="paso reveal"><div class="n">PASO 03</div><h3>Visitamos</h3><p>Coordinamos las visitas y resolvemos cada duda técnica y legal en el camino.</p></div>
+        <div class="paso reveal"><div class="n">PASO 04</div><h3>Cerramos</h3><p>Negociamos, acompañamos la documentación y llegamos a la firma con todo en orden.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS / VALORES -->
+  <section class="section" id="nosotros">
+    <div class="wrap">
+      <div class="valores">
+        <div class="reveal">
+          <span class="eyebrow">Por qué M&amp;M</span>
+          <h2 style="font-size:var(--step-3);margin-bottom:var(--sp-2)">Cercanía cordobesa, criterio profesional</h2>
+          <p class="lede" style="margin-bottom:var(--sp-5)">Somos una inmobiliaria de Córdoba enfocada en oportunidades reales. Trabajamos de cerca, con claridad y sin promesas vacías.</p>
+          <div class="valores-list">
+            <div class="valor">
+              <div class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+              <div><h3>Conocimiento local</h3><p>Zona por zona: valores, potencial y el detalle que hace la diferencia en cada barrio.</p></div>
+            </div>
+            <div class="valor">
+              <div class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/></svg></div>
+              <div><h3>Transparencia</h3><p>Documentación verificada y números claros. Sabés siempre en qué etapa está la operación.</p></div>
+            </div>
+            <div class="valor">
+              <div class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+              <div><h3>Acompañamiento real</h3><p>Una sola persona de contacto que responde y te guía de principio a fin.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="valores-figure reveal">
+          <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20640%20800%22%20width%3D%22640%22%20height%3D%22800%22%3E%20%3Cdefs%3E%3ClinearGradient%20id%3D%22f%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2314395B%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230B2237%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url(%23f)%22%2F%3E%20%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22408%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.064%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22454%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.052%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22500%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.040%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22546%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.028%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22592%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.016%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M0%20600%20Q160%20520%20340%20575%20T640%20560%20V800%20H0%20Z%22%20fill%3D%22%2317466C%22%20fill-opacity%3D%220.6%22%2F%3E%20%3Cpath%20d%3D%22M0%20650%20Q200%20575%20420%20630%20T640%20630%20V800%20H0%20Z%22%20fill%3D%22%230B2237%22%2F%3E%20%3Cg%3E%20%3Crect%20x%3D%22210%22%20y%3D%22470%22%20width%3D%22220%22%20height%3D%22150%22%20fill%3D%22%23fff%22%20fill-opacity%3D%220.96%22%2F%3E%20%3Cpath%20d%3D%22M196%20472%20L320%20396%20L444%20472%20Z%22%20fill%3D%22%232F9BE0%22%2F%3E%20%3Crect%20x%3D%22250%22%20y%3D%22520%22%20width%3D%2246%22%20height%3D%22100%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.85%22%2F%3E%20%3Crect%20x%3D%22330%22%20y%3D%22515%22%20width%3D%2266%22%20height%3D%2248%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.35%22%20stroke%3D%22%232F9BE0%22%20stroke-width%3D%222%22%2F%3E%20%3C%2Fg%3E%20%3Ctext%20x%3D%2240%22%20y%3D%22760%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2215%22%20font-weight%3D%22700%22%20fill%3D%22%23BFE0F6%22%20letter-spacing%3D%221%22%20opacity%3D%220.85%22%3EILUSTRACI%C3%93N%20DEMO%3C%2Ftext%3E%20%3C%2Fsvg%3E" alt="Ilustración de una propiedad en las sierras de Córdoba — imagen de demostración" width="640" height="800">
+          <div class="fig-badge"><b>Inversiones Generales M&amp;M</b><span>Agentes inmobiliarios · Córdoba, Argentina</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section contacto" id="contacto">
+    <canvas data-contours data-focal-x="0.12" data-focal-y="0.1" data-alpha="0.5" data-gap="36" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="contacto-grid">
+        <div class="reveal">
+          <span class="eyebrow">Hablemos</span>
+          <h2>¿Comprás, vendés o querés tasar?</h2>
+          <p class="lede">Contanos qué necesitás y te respondemos a la brevedad. La forma más rápida es por WhatsApp.</p>
+          <div class="contact-methods">
+            <a class="cmethod" data-wa="Hola M&M, quiero hacer una consulta." target="_blank" rel="noopener">
+              <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2.1-.2 0-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.2.7 3 .6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2Z"/></svg></span>
+              <div><b>WhatsApp</b><span>+54 9 351 000-0000 · <em>a completar</em></span></div>
+            </a>
+            <a class="cmethod" href="tel:+543510000000">
+              <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg></span>
+              <div><b>Teléfono</b><span>+54 351 000-0000 · <em>a completar</em></span></div>
+            </a>
+            <a class="cmethod" href="mailto:info@inversionesgeneralesmym.com">
+              <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+              <div><b>Email</b><span>info@inversionesgeneralesmym.com</span></div>
+            </a>
+            <a class="cmethod" href="https://www.instagram.com/inversionesgeneralesmym/" target="_blank" rel="noopener">
+              <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></span>
+              <div><b>Instagram</b><span>@inversionesgeneralesmym</span></div>
+            </a>
+          </div>
+        </div>
+        <form class="form-card reveal" id="contact-form">
+          <h3>Dejanos tu consulta</h3>
+          <div class="form-row form-2">
+            <div class="field-l"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" required autocomplete="name" placeholder="Tu nombre"></div>
+            <div class="field-l"><label for="c-tel">Teléfono / WhatsApp</label><input id="c-tel" name="tel" required autocomplete="tel" placeholder="Cómo te contactamos"></div>
+          </div>
+          <div class="form-row">
+            <div class="field-l"><label for="c-interes">Me interesa</label>
+              <select id="c-interes" name="interes">
+                <option>Comprar una propiedad</option>
+                <option>Vender mi propiedad</option>
+                <option>Tasar mi propiedad</option>
+                <option>Alquilar / administración</option>
+                <option>Otra consulta</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-l"><label for="c-msg">Mensaje</label><textarea id="c-msg" name="mensaje" placeholder="Contanos qué estás buscando"></textarea></div>
+          </div>
+          <button class="btn btn-lg" type="submit">Enviar consulta</button>
+          <p class="form-fine">Formulario de demostración — todavía no envía correos. Conectalo a tu email o CRM.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="Inversiones Generales M&M">
+          <svg class="mark" viewBox="0 0 512 512" aria-hidden="true" style="color:#fff"><use href="#mm-mark"/></svg>
+          <span class="brand-text"><b>Inversiones M&amp;M</b><span>Agentes inmobiliarios</span></span>
+        </a>
+        <p>Inmobiliaria en Córdoba, Argentina. Compra, venta, tasación y administración de propiedades y terrenos.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/inversionesgeneralesmym/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
+          <a data-wa="Hola M&M, quiero hacer una consulta." target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Propiedades</h4>
+        <a href="#destacados">En venta</a>
+        <a href="#destacados">En alquiler</a>
+        <a href="#destacados">Lotes y terrenos</a>
+        <a href="#destacados">Casas quinta</a>
+      </div>
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <a href="#servicios">Compra</a>
+        <a href="#servicios">Venta</a>
+        <a href="#servicios">Tasación</a>
+        <a href="#servicios">Administración</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a data-wa="Hola M&M, quiero hacer una consulta." target="_blank" rel="noopener">WhatsApp</a>
+        <a href="mailto:info@inversionesgeneralesmym.com">Email</a>
+        <a href="#zonas">Zonas</a>
+        <a href="#contacto">Tasá tu propiedad</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> Inversiones Generales M&amp;M · Córdoba, Argentina</span>
+      <span>Sitio de demostración · datos de contacto y propiedades a completar</span>
+    </div>
+  </div>
+</footer>
+
+
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:200;background:#0B2237;color:#BFE0F6;font:600 13px/1.4 system-ui,sans-serif;padding:10px 16px;text-align:center;border-top:1px solid rgba(191,224,246,.2)">Vista previa — diseño “Cauce” para Inversiones Generales M&M · datos, fotos y contacto son de demostración</div>
+<script>/* "Cauce" — generative topographic contours.
+   Concentric warped iso-lines emanating from a focal point, echoing the
+   brand spiral. Cheap (no deps), DPR-aware, honours reduced-motion. */
+(function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function hexToRgb(h) {
+    const n = parseInt(h.replace("#", ""), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  class Field {
+    constructor(canvas) {
+      this.c = canvas;
+      this.ctx = canvas.getContext("2d");
+      this.fx = parseFloat(canvas.dataset.focalX ?? "0.82");
+      this.fy = parseFloat(canvas.dataset.focalY ?? "0.18");
+      this.color = hexToRgb(canvas.dataset.color || "#2F9BE0");
+      this.tint = hexToRgb(canvas.dataset.tint || "#BFE0F6");
+      this.gap = parseFloat(canvas.dataset.gap || "30");
+      this.alpha = parseFloat(canvas.dataset.alpha || "0.5");
+      this.speed = parseFloat(canvas.dataset.speed || "1");
+      this.t = Math.random() * 1000;
+      this.resize();
+      const ro = new ResizeObserver(() => this.resize());
+      ro.observe(canvas);
+    }
+    resize() {
+      const r = this.c.getBoundingClientRect();
+      this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.w = Math.max(1, r.width);
+      this.h = Math.max(1, r.height);
+      this.c.width = this.w * this.dpr;
+      this.c.height = this.h * this.dpr;
+      this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      if (reduce) this.draw();
+    }
+    draw() {
+      const { ctx, w, h } = this;
+      const cx = w * this.fx;
+      const cy = h * this.fy;
+      ctx.clearRect(0, 0, w, h);
+      const maxR = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy)) + this.gap;
+      const rings = Math.ceil(maxR / this.gap);
+      for (let i = 1; i <= rings; i++) {
+        const base = i * this.gap;
+        const prog = i / rings;
+        ctx.beginPath();
+        const steps = Math.max(48, Math.floor(base / 3));
+        for (let s = 0; s <= steps; s++) {
+          const a = (s / steps) * Math.PI * 2;
+          // organic warp: a few sinusoids, phase drifts with time + radius
+          const warp =
+            Math.sin(a * 3 + this.t * 0.6 + base * 0.02) * (7 + prog * 22) +
+            Math.sin(a * 2 - this.t * 0.4 + base * 0.015) * (10 + prog * 26) +
+            Math.sin(a * 5 + this.t * 0.25) * (3 + prog * 8);
+          const r = base + warp;
+          const x = cx + Math.cos(a) * r;
+          const y = cy + Math.sin(a) * r * 0.94; // slight vertical squash
+          s === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        const mix = Math.min(1, prog * 1.2);
+        const cr = Math.round(this.color[0] + (this.tint[0] - this.color[0]) * (1 - mix));
+        const cg = Math.round(this.color[1] + (this.tint[1] - this.color[1]) * (1 - mix));
+        const cb = Math.round(this.color[2] + (this.tint[2] - this.color[2]) * (1 - mix));
+        const fade = this.alpha * (0.35 + 0.65 * (1 - prog));
+        ctx.strokeStyle = `rgba(${cr},${cg},${cb},${fade})`;
+        ctx.lineWidth = i % 4 === 0 ? 1.6 : 1;
+        ctx.stroke();
+      }
+    }
+    tick(dt) {
+      this.t += dt * 0.12 * this.speed;
+      this.draw();
+    }
+  }
+
+  const canvases = Array.from(document.querySelectorAll("canvas[data-contours]"));
+  if (!canvases.length) return;
+  const fields = canvases.map((c) => new Field(c));
+
+  if (reduce) {
+    fields.forEach((f) => f.draw());
+    return;
+  }
+
+  let last = performance.now();
+  let running = true;
+  // pause when tab hidden
+  document.addEventListener("visibilitychange", () => {
+    running = !document.hidden;
+    if (running) { last = performance.now(); loop(last); }
+  });
+  function loop(now) {
+    if (!running) return;
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    for (const f of fields) f.tick(dt);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>/* Datos de propiedades — TODOS SON DE DEMOSTRACIÓN.
+   Reemplazar por el inventario real de M&M. Ninguna de estas propiedades,
+   precios o direcciones es real. Zonas: barrios/localidades reales del Gran
+   Córdoba (Argentina) usados solo como contexto geográfico. */
+window.MM_PROPS = [
+  {
+    id: "nc-101", titulo: "Departamento a estrenar con balcón aterrazado",
+    tipo: "departamento", operacion: "venta", zona: "Nueva Córdoba",
+    precio: 128000, moneda: "USD", dorm: 2, banos: 2, m2: 74, cochera: 1,
+    destacado: true, oportunidad: false, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk0%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230B2237%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2317466C%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun0%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232F9BE0%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%232F9BE0%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk0)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun0)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%2295%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22%23fff%22%2F%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22none%22%20stroke%3D%22%230B2237%22%20stroke-opacity%3D%220.12%22%20stroke-width%3D%222%22%2F%3E%20%3Crect%20x%3D%22305%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%20%3Crect%20x%3D%22380%22%20y%3D%22450%22%20width%3D%2240%22%20height%3D%2255%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.8%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Unidad luminosa en piso alto, cocina integrada y amenities completos a metros del Parque Sarmiento.",
+    amenities: ["Balcón aterrazado", "Amenities", "Pileta", "SUM", "Seguridad 24h", "Cochera cubierta"],
+  },
+  {
+    id: "cr-102", titulo: "Casa moderna 3 dormitorios con jardín",
+    tipo: "casa", operacion: "venta", zona: "Cerro de las Rosas",
+    precio: 315000, moneda: "USD", dorm: 3, banos: 3, m2: 220, cochera: 2,
+    destacado: true, oportunidad: false, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk1%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230E2C46%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231D6FA0%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun1%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2357B4EC%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2357B4EC%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk1)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun1)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%2295%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%20stroke%3D%22%230B2237%22%20stroke-width%3D%220%22%20%3E%20%3Crect%20x%3D%22250%22%20y%3D%22360%22%20width%3D%22300%22%20height%3D%22145%22%20fill%3D%22%23fff%22%2F%3E%20%3Cpath%20d%3D%22M235%20362%20L400%20268%20L565%20362%20Z%22%20fill%3D%22%2357B4EC%22%2F%3E%20%3Crect%20x%3D%22300%22%20y%3D%22410%22%20width%3D%2260%22%20height%3D%2295%22%20fill%3D%22%230E2C46%22%20fill-opacity%3D%220.85%22%2F%3E%20%3Crect%20x%3D%22430%22%20y%3D%22405%22%20width%3D%2280%22%20height%3D%2260%22%20fill%3D%22%231D6FA0%22%20fill-opacity%3D%220.35%22%20stroke%3D%22%2357B4EC%22%20stroke-width%3D%222%22%2F%3E%20%3Crect%20x%3D%22250%22%20y%3D%22360%22%20width%3D%22300%22%20height%3D%22145%22%20fill%3D%22none%22%20stroke%3D%22%230E2C46%22%20stroke-opacity%3D%220.15%22%20stroke-width%3D%222%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Diseño contemporáneo en dos plantas, quincho con parrilla, fondo verde y doble cochera.",
+    amenities: ["Jardín", "Quincho", "Parrilla", "Doble cochera", "Pisos de porcelanato", "Living con doble altura"],
+  },
+  {
+    id: "va-103", titulo: "Lote en barrio cerrado con vista a la sierra",
+    tipo: "lote", operacion: "venta", zona: "Valle Escondido",
+    precio: 62000, moneda: "USD", dorm: 0, banos: 0, m2: 800, cochera: 0,
+    destacado: true, oportunidad: true, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk2%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230B2237%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23123353%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun2%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%233FA7E8%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%233FA7E8%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk2)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun2)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M0%20430%20Q160%20360%20330%20410%20T680%20400%20T800%20420%20V600%20H0%20Z%22%20fill%3D%22%23123353%22%20fill-opacity%3D%220.55%22%2F%3E%20%3Cpath%20d%3D%22M0%20470%20Q210%20405%20430%20455%20T800%20460%20V600%20H0%20Z%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.75%22%2F%3E%3Crect%20y%3D%22500%22%20width%3D%22800%22%20height%3D%22100%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22500%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%3E%20%3Cpath%20d%3D%22M170%20500%20L330%20405%20L600%20470%20L470%20500%20Z%22%20fill%3D%22%233FA7E8%22%20fill-opacity%3D%220.22%22%20stroke%3D%22%233FA7E8%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%2210%208%22%2F%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22405%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22470%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ccircle%20cx%3D%22170%22%20cy%3D%22500%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ccircle%20cx%3D%22470%22%20cy%3D%22500%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Terreno en country con seguridad, servicios subterráneos y club house. Orientación norte.",
+    amenities: ["Barrio cerrado", "Seguridad 24h", "Club house", "Servicios subterráneos", "Vista a la sierra", "Orientación norte"],
+  },
+  {
+    id: "gp-104", titulo: "PH reciclado 2 ambientes en Güemes",
+    tipo: "departamento", operacion: "alquiler", zona: "Güemes",
+    precio: 480000, moneda: "ARS", dorm: 1, banos: 1, m2: 52, cochera: 0,
+    destacado: true, oportunidad: false, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk1%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230E2C46%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231D6FA0%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun1%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2357B4EC%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2357B4EC%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk1)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun1)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%2357B4EC%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%2295%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22%23fff%22%2F%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22none%22%20stroke%3D%22%230E2C46%22%20stroke-opacity%3D%220.12%22%20stroke-width%3D%222%22%2F%3E%20%3Crect%20x%3D%22305%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%2357B4EC%22%20fill-opacity%3D%220.25%22%2F%3E%20%3Crect%20x%3D%22380%22%20y%3D%22450%22%20width%3D%2240%22%20height%3D%2255%22%20fill%3D%22%230E2C46%22%20fill-opacity%3D%220.8%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "PH con patio propio en el corazón del Paseo de las Artes, ideal para vivienda o estudio profesional.",
+    amenities: ["Patio propio", "Reciclado a nuevo", "Zona gastronómica", "Luminoso"],
+  },
+  {
+    id: "me-105", titulo: "Casa quinta con pileta y monte",
+    tipo: "campo", operacion: "venta", zona: "Mendiolaza",
+    precio: 245000, moneda: "USD", dorm: 3, banos: 2, m2: 1500, cochera: 3,
+    destacado: true, oportunidad: true, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk2%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230B2237%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23123353%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun2%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%233FA7E8%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%233FA7E8%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk2)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun2)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M0%20430%20Q160%20360%20330%20410%20T680%20400%20T800%20420%20V600%20H0%20Z%22%20fill%3D%22%23123353%22%20fill-opacity%3D%220.55%22%2F%3E%20%3Cpath%20d%3D%22M0%20470%20Q210%20405%20430%20455%20T800%20460%20V600%20H0%20Z%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.75%22%2F%3E%3Crect%20y%3D%22495%22%20width%3D%22800%22%20height%3D%22105%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22495%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.4%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%20%3Cpath%20d%3D%22M60%20540%20Q400%20470%20760%20545%22%2F%3E%20%3Cpath%20d%3D%22M60%20570%20Q400%20505%20760%20575%22%2F%3E%20%3C%2Fg%3E%20%3Cpath%20d%3D%22M540%20495%20l16%20-34%2016%2034%20z%22%20fill%3D%22%23123353%22%20fill-opacity%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M250%20495%20l12%20-26%2012%2026%20z%22%20fill%3D%22%23123353%22%20fill-opacity%3D%220.7%22%2F%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Amplio terreno arbolado con casa principal, pileta, galería y espacio para huerta a minutos del centro.",
+    amenities: ["Pileta", "Monte nativo", "Galería", "Perforación de agua", "Espacio para huerta", "3 cocheras"],
+  },
+  {
+    id: "ac-106", titulo: "Departamento 1 dormitorio con renta asegurada",
+    tipo: "departamento", operacion: "venta", zona: "Alta Córdoba",
+    precio: 74000, moneda: "USD", dorm: 1, banos: 1, m2: 45, cochera: 0,
+    destacado: true, oportunidad: true, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk3%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23102D45%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231F6A96%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun3%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236BC0F0%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%236BC0F0%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk3)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun3)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%236BC0F0%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%236BC0F0%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%236BC0F0%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%236BC0F0%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%236BC0F0%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%236BC0F0%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%236BC0F0%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%2295%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22%23fff%22%2F%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22none%22%20stroke%3D%22%23102D45%22%20stroke-opacity%3D%220.12%22%20stroke-width%3D%222%22%2F%3E%20%3Crect%20x%3D%22305%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%236BC0F0%22%20fill-opacity%3D%220.25%22%2F%3E%20%3Crect%20x%3D%22380%22%20y%3D%22450%22%20width%3D%2240%22%20height%3D%2255%22%20fill%3D%22%23102D45%22%20fill-opacity%3D%220.8%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Excelente unidad de inversión con inquilino y contrato vigente. Sólida rentabilidad en dólares.",
+    amenities: ["Renta vigente", "Bajas expensas", "Cerca de la UNC", "Apto profesional"],
+  },
+  {
+    id: "jd-107", titulo: "Casa de categoría 4 dormitorios",
+    tipo: "casa", operacion: "venta", zona: "Barrio Jardín",
+    precio: 398000, moneda: "USD", dorm: 4, banos: 3, m2: 280, cochera: 2,
+    destacado: false, oportunidad: false, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk2%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230B2237%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23123353%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun2%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%233FA7E8%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%233FA7E8%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk2)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun2)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%233FA7E8%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%2295%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%20stroke%3D%22%230B2237%22%20stroke-width%3D%220%22%20%3E%20%3Crect%20x%3D%22250%22%20y%3D%22360%22%20width%3D%22300%22%20height%3D%22145%22%20fill%3D%22%23fff%22%2F%3E%20%3Cpath%20d%3D%22M235%20362%20L400%20268%20L565%20362%20Z%22%20fill%3D%22%233FA7E8%22%2F%3E%20%3Crect%20x%3D%22300%22%20y%3D%22410%22%20width%3D%2260%22%20height%3D%2295%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.85%22%2F%3E%20%3Crect%20x%3D%22430%22%20y%3D%22405%22%20width%3D%2280%22%20height%3D%2260%22%20fill%3D%22%23123353%22%20fill-opacity%3D%220.35%22%20stroke%3D%22%233FA7E8%22%20stroke-width%3D%222%22%2F%3E%20%3Crect%20x%3D%22250%22%20y%3D%22360%22%20width%3D%22300%22%20height%3D%22145%22%20fill%3D%22none%22%20stroke%3D%22%230B2237%22%20stroke-opacity%3D%220.15%22%20stroke-width%3D%222%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Residencia familiar en zona consolidada, con dependencia, escritorio y amplio parque.",
+    amenities: ["Parque", "Dependencia", "Escritorio", "Losa radiante", "Doble cochera"],
+  },
+  {
+    id: "vc-108", titulo: "Lote industrial sobre ruta",
+    tipo: "lote", operacion: "venta", zona: "Villa Allende",
+    precio: 89000, moneda: "USD", dorm: 0, banos: 0, m2: 1200, cochera: 0,
+    destacado: false, oportunidad: false, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk0%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230B2237%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2317466C%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun0%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232F9BE0%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%232F9BE0%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk0)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun0)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M0%20430%20Q160%20360%20330%20410%20T680%20400%20T800%20420%20V600%20H0%20Z%22%20fill%3D%22%2317466C%22%20fill-opacity%3D%220.55%22%2F%3E%20%3Cpath%20d%3D%22M0%20470%20Q210%20405%20430%20455%20T800%20460%20V600%20H0%20Z%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.75%22%2F%3E%3Crect%20y%3D%22500%22%20width%3D%22800%22%20height%3D%22100%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22500%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%3E%20%3Cpath%20d%3D%22M170%20500%20L330%20405%20L600%20470%20L470%20500%20Z%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.22%22%20stroke%3D%22%232F9BE0%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%2210%208%22%2F%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22405%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22470%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ccircle%20cx%3D%22170%22%20cy%3D%22500%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ccircle%20cx%3D%22470%22%20cy%3D%22500%22%20r%3D%226%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Terreno con excelente acceso y frente sobre ruta, apto galpón o desarrollo comercial.",
+    amenities: ["Frente a ruta", "Apto comercial", "Servicios en frente", "Gran superficie"],
+  },
+  {
+    id: "nc-109", titulo: "Monoambiente premium para inversión",
+    tipo: "departamento", operacion: "alquiler", zona: "Nueva Córdoba",
+    precio: 360000, moneda: "ARS", dorm: 1, banos: 1, m2: 38, cochera: 0,
+    destacado: false, oportunidad: false, img: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20width%3D%22800%22%20height%3D%22600%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22sk0%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230B2237%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2317466C%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22sun0%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232F9BE0%22%20stop-opacity%3D%220.55%22%2F%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%232F9BE0%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url(%23sk0)%22%2F%3E%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22150%22%20r%3D%22230%22%20fill%3D%22url(%23sun0)%22%2F%3E%20%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22660%22%20cy%3D%22120%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%2295%22%20fill%3D%22%23F4F7FA%22%2F%3E%20%3Crect%20y%3D%22505%22%20width%3D%22800%22%20height%3D%223%22%20fill%3D%22%232F9BE0%22%20opacity%3D%220.5%22%2F%3E%20%3Cg%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22%23fff%22%2F%3E%20%3Crect%20x%3D%22285%22%20y%3D%22215%22%20width%3D%22230%22%20height%3D%22290%22%20fill%3D%22none%22%20stroke%3D%22%230B2237%22%20stroke-opacity%3D%220.12%22%20stroke-width%3D%222%22%2F%3E%20%3Crect%20x%3D%22305%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22235%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22280%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22325%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22370%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22415%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22305%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22357%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%3Crect%20x%3D%22409%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%22461%22%20y%3D%22460%22%20width%3D%2234%22%20height%3D%2230%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.25%22%2F%3E%20%3Crect%20x%3D%22380%22%20y%3D%22450%22%20width%3D%2240%22%20height%3D%2255%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.8%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20transform%3D%22translate(28%2C28)%22%3E%20%3Crect%20width%3D%22103.60000000000001%22%20height%3D%2230%22%20rx%3D%2215%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.62%22%2F%3E%20%3Ccircle%20cx%3D%2218%22%20cy%3D%2215%22%20r%3D%224%22%20fill%3D%22%23E0A93F%22%2F%3E%20%3Ctext%20x%3D%2230%22%20y%3D%2220%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20letter-spacing%3D%221%22%3EFOTO%20DEMO%3C%2Ftext%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E",
+    desc: "Monoambiente amoblado en edificio con amenities, listo para habitar frente a la plaza.",
+    amenities: ["Amoblado", "Amenities", "Gimnasio", "Laundry", "Frente a plaza"],
+  },
+];
+</script>
+<script>/* Inversiones Generales M&M — interacciones del sitio */
+(function () {
+  "use strict";
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const props = window.MM_PROPS || [];
+  let io = null; // IntersectionObserver for reveal-on-scroll (declared early: catalog init calls observe())
+
+  const WHATSAPP = "5490000000000"; // TODO: reemplazar por el número real de M&M
+
+  /* ---------- helpers ---------- */
+  const money = (p) =>
+    p.moneda === "USD"
+      ? "US$ " + p.precio.toLocaleString("es-AR")
+      : "$ " + p.precio.toLocaleString("es-AR");
+  const opLabel = { venta: "Venta", alquiler: "Alquiler" };
+  const tipoLabel = { casa: "Casa", departamento: "Departamento", lote: "Lote", campo: "Casa quinta / Campo" };
+
+  const icon = {
+    pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+    bed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 14h18M3 18v2M21 18v2M7 10V7a1 1 0 0 1 1-1h3v4"/></svg>',
+    bath: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3Z"/><path d="M6 12V6a2 2 0 0 1 2-2c1 0 1.5.5 2 1"/><path d="M9 5.5 11 7"/></svg>',
+    area: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 15v5h-5M4 4l6 6M20 20l-6-6"/></svg>',
+    car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 16v2M19 16v2M3 13l2-5a2 2 0 0 1 2-1.4h10A2 2 0 0 1 19 8l2 5v3H3v-3Z"/><circle cx="7.5" cy="13.5" r="1"/><circle cx="16.5" cy="13.5" r="1"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  };
+
+  function cardHTML(p) {
+    const tags = [`<span class="tag ${p.operacion}">${opLabel[p.operacion]}</span>`];
+    if (p.oportunidad) tags.push('<span class="tag oportunidad">Oportunidad</span>');
+    const specs =
+      p.tipo === "lote"
+        ? `<span>${icon.area} ${p.m2} m²</span>`
+        : `<span>${icon.bed} ${p.dorm} dorm</span><span>${icon.bath} ${p.banos} baños</span><span>${icon.area} ${p.m2} m²</span>`;
+    const priceSmall = p.operacion === "alquiler" ? " <small>/ mes</small>" : "";
+    return `<article class="card reveal">
+      <a class="card-media" href="#destacados" aria-label="${p.titulo}">
+        <img src="${p.img}" alt="${tipoLabel[p.tipo]} en ${p.zona} — imagen de demostración" loading="lazy" width="800" height="600"/>
+        <div class="card-tags">${tags.join("")}</div>
+      </a>
+      <button class="card-fav" type="button" aria-label="Guardar propiedad" title="Guardar">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 6c-2.3 4.5-9.3 9-9.3 9Z"/></svg>
+      </button>
+      <div class="card-body">
+        <div class="card-price">${money(p)}${priceSmall}</div>
+        <a href="#destacados"><h3 class="card-title">${p.titulo}</h3></a>
+        <div class="card-loc">${icon.pin} ${p.zona}, Córdoba</div>
+        <div class="card-specs">${specs}</div>
+      </div>
+    </article>`;
+  }
+
+  /* ---------- home: destacados ---------- */
+  const dest = $("#destacados-grid");
+  if (dest) {
+    dest.innerHTML = props.filter((p) => p.destacado).slice(0, 6).map(cardHTML).join("");
+  }
+
+  /* ---------- home: hero search -> catálogo ---------- */
+  const heroForm = $("#hero-search");
+  if (heroForm) {
+    heroForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = new URLSearchParams();
+      $$("select, input", heroForm).forEach((el) => {
+        if (el.name && el.value) q.set(el.name, el.value);
+      });
+      document.getElementById("destacados").scrollIntoView({behavior:"smooth"});
+    });
+  }
+
+  /* ---------- catálogo ---------- */
+  const grid = $("#catalogo-grid");
+  if (grid) {
+    const params = new URLSearchParams(location.search);
+    const controls = {
+      operacion: $("#f-operacion"),
+      tipo: $("#f-tipo"),
+      zona: $("#f-zona"),
+      orden: $("#f-orden"),
+    };
+    // populate zona options
+    const zonas = [...new Set(props.map((p) => p.zona))].sort();
+    if (controls.zona) {
+      zonas.forEach((z) => {
+        const o = document.createElement("option");
+        o.value = z; o.textContent = z; controls.zona.appendChild(o);
+      });
+    }
+    // preset from query
+    ["operacion", "tipo", "zona"].forEach((k) => {
+      if (controls[k] && params.get(k)) controls[k].value = params.get(k);
+    });
+
+    function apply() {
+      let list = props.filter((p) => {
+        if (controls.operacion.value && p.operacion !== controls.operacion.value) return false;
+        if (controls.tipo.value && p.tipo !== controls.tipo.value) return false;
+        if (controls.zona.value && p.zona !== controls.zona.value) return false;
+        return true;
+      });
+      const ord = controls.orden ? controls.orden.value : "";
+      if (ord === "menor") list.sort((a, b) => usd(a) - usd(b));
+      if (ord === "mayor") list.sort((a, b) => usd(b) - usd(a));
+      grid.innerHTML = list.length
+        ? list.map(cardHTML).join("")
+        : "";
+      const nr = $("#no-results");
+      if (nr) nr.hidden = list.length > 0;
+      const c = $("#result-count");
+      if (c) c.innerHTML = `<b>${list.length}</b> ${list.length === 1 ? "propiedad" : "propiedades"}`;
+      observe();
+    }
+    // approx USD for sorting (rough ARS->USD only for ordering)
+    const usd = (p) => (p.moneda === "USD" ? p.precio : p.precio / 1000);
+    Object.values(controls).forEach((el) => el && el.addEventListener("change", apply));
+    apply();
+  }
+
+  /* ---------- detalle ---------- */
+  const detail = $("#detalle");
+  if (detail) {
+    const id = new URLSearchParams(location.search).get("id");
+    const p = props.find((x) => x.id === id) || props[0];
+    document.title = `${p.titulo} — Inversiones Generales M&M`;
+    const priceSmall = p.operacion === "alquiler" ? ' <small style="font-size:1rem;color:var(--ink-faint)">/ mes</small>' : "";
+    const specs =
+      p.tipo === "lote"
+        ? [["Superficie", p.m2 + " m²"], ["Tipo", tipoLabel[p.tipo]], ["Operación", opLabel[p.operacion]], ["Zona", p.zona]]
+        : [["Dormitorios", p.dorm], ["Baños", p.banos], ["Superficie", p.m2 + " m²"], ["Cocheras", p.cochera]];
+    const waText = encodeURIComponent(`Hola M&M, me interesa la propiedad "${p.titulo}" (${p.id}). ¿Podemos coordinar una visita?`);
+    detail.querySelector("#d-title").textContent = p.titulo;
+    detail.querySelector("#d-loc").innerHTML = icon.pin + " " + p.zona + ", Córdoba";
+    detail.querySelector("#d-crumb").textContent = p.titulo;
+    detail.querySelector("#d-tags").innerHTML =
+      `<span class="tag ${p.operacion}">${opLabel[p.operacion]}</span>` +
+      (p.oportunidad ? '<span class="tag oportunidad">Oportunidad</span>' : "");
+    detail.querySelector("#d-gallery").innerHTML =
+      `<div class="g-main"><img src="${p.img}" alt="${p.titulo} — imagen de demostración"></div>
+       <div class="g-side"><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20640%20800%22%20width%3D%22640%22%20height%3D%22800%22%3E%20%3Cdefs%3E%3ClinearGradient%20id%3D%22f%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2314395B%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230B2237%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url(%23f)%22%2F%3E%20%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%2286%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.148%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22132%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.136%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22178%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.124%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22224%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.112%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22270%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.100%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22316%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.088%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22362%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.076%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22408%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.064%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22454%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.052%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22500%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.040%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22546%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.028%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%22150%22%20r%3D%22592%22%20fill%3D%22none%22%20stroke%3D%22%232F9BE0%22%20stroke-opacity%3D%220.016%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M0%20600%20Q160%20520%20340%20575%20T640%20560%20V800%20H0%20Z%22%20fill%3D%22%2317466C%22%20fill-opacity%3D%220.6%22%2F%3E%20%3Cpath%20d%3D%22M0%20650%20Q200%20575%20420%20630%20T640%20630%20V800%20H0%20Z%22%20fill%3D%22%230B2237%22%2F%3E%20%3Cg%3E%20%3Crect%20x%3D%22210%22%20y%3D%22470%22%20width%3D%22220%22%20height%3D%22150%22%20fill%3D%22%23fff%22%20fill-opacity%3D%220.96%22%2F%3E%20%3Cpath%20d%3D%22M196%20472%20L320%20396%20L444%20472%20Z%22%20fill%3D%22%232F9BE0%22%2F%3E%20%3Crect%20x%3D%22250%22%20y%3D%22520%22%20width%3D%2246%22%20height%3D%22100%22%20fill%3D%22%230B2237%22%20fill-opacity%3D%220.85%22%2F%3E%20%3Crect%20x%3D%22330%22%20y%3D%22515%22%20width%3D%2266%22%20height%3D%2248%22%20fill%3D%22%232F9BE0%22%20fill-opacity%3D%220.35%22%20stroke%3D%22%232F9BE0%22%20stroke-width%3D%222%22%2F%3E%20%3C%2Fg%3E%20%3Ctext%20x%3D%2240%22%20y%3D%22760%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2215%22%20font-weight%3D%22700%22%20fill%3D%22%23BFE0F6%22%20letter-spacing%3D%221%22%20opacity%3D%220.85%22%3EILUSTRACI%C3%93N%20DEMO%3C%2Ftext%3E%20%3C%2Fsvg%3E" alt="Vista — demo"><img src="${p.img}" alt="Vista — demo"></div>`;
+    detail.querySelector("#d-facts").innerHTML = specs
+      .map(([k, v]) => `<div class="f"><b>${v}</b><span>${k}</span></div>`)
+      .join("");
+    detail.querySelector("#d-desc").textContent = p.desc;
+    detail.querySelector("#d-amen").innerHTML = p.amenities
+      .map((a) => `<li>${icon.arrow.replace('width="16" height="16"', 'width="18" height="18"')} ${a}</li>`)
+      .join("");
+    detail.querySelector("#d-price").innerHTML = money(p) + priceSmall;
+    detail.querySelector("#d-wa").href = `https://wa.me/${WHATSAPP}?text=${waText}`;
+    detail.querySelector("#d-id").textContent = "Ref. " + p.id.toUpperCase();
+  }
+
+  /* ---------- whatsapp links (global) ---------- */
+  $$("[data-wa]").forEach((a) => {
+    const msg = a.getAttribute("data-wa") || "Hola M&M, quiero hacer una consulta.";
+    a.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  });
+
+  /* ---------- contact form (demo) ---------- */
+  const cform = $("#contact-form");
+  if (cform) {
+    cform.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const btn = cform.querySelector('button[type="submit"]');
+      btn.textContent = "¡Consulta enviada! (demo)";
+      btn.disabled = true;
+      setTimeout(() => { btn.textContent = "Enviar consulta"; btn.disabled = false; cform.reset(); }, 2600);
+    });
+  }
+
+  /* ---------- header scrolled ---------- */
+  const header = $(".site-header");
+  const onScroll = () => header && header.classList.toggle("scrolled", window.scrollY > 8);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ---------- mobile nav ---------- */
+  const toggle = $(".nav-toggle");
+  const menu = $("#mobile-menu");
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      const open = menu.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open);
+    });
+    $$("a", menu).forEach((a) => a.addEventListener("click", () => menu.classList.remove("open")));
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  function observe() {
+    if (!("IntersectionObserver" in window)) { $$(".reveal").forEach((el) => el.classList.add("in")); return; }
+    io = io || new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    $$(".reveal:not(.in)").forEach((el) => io.observe(el));
+  }
+  observe();
+
+  /* ---------- year ---------- */
+  $$("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
+})();
+</script>
