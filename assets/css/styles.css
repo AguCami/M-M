@@ -470,3 +470,88 @@ p { margin: 0; }
 .amenities { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top: var(--sp-4); }
 .amenities li { list-style:none; display:flex; gap:.5rem; align-items:center; color: var(--ink-soft); font-size: var(--step-0); }
 .amenities svg { color: var(--celeste); width:18px;height:18px; flex:none; }
+
+/* ============================================================
+   Liquid Glass — tratamiento traslúcido tipo Apple
+   (brief del usuario: prima sobre la regla anti-glass del craft-floor)
+   ============================================================ */
+
+/* --- Botones: vidrio líquido con brillo especular y destello al hover --- */
+.btn {
+  position: relative; overflow: hidden; isolation: isolate;
+  border: 1px solid rgba(255,255,255,.42);
+  background: linear-gradient(135deg, rgba(70,175,235,.96), rgba(29,130,198,.96));
+  -webkit-backdrop-filter: blur(8px) saturate(1.6);
+  backdrop-filter: blur(8px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -3px 9px rgba(11,34,55,.30), 0 12px 30px -10px rgba(29,130,198,.55);
+}
+.btn::before { /* highlight superior (menisco) */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,0) 48%);
+}
+.btn::after { /* destello que barre */
+  content: ""; position: absolute; top: -25%; left: -75%; width: 48%; height: 150%; z-index: -1; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-18deg); transition: left .7s var(--ease);
+}
+.btn:hover { background: linear-gradient(135deg, rgba(70,175,235,1), rgba(24,110,170,1)); }
+.btn:hover::after { left: 135%; }
+
+.btn-ghost {
+  background: rgba(255,255,255,.55);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5); backdrop-filter: blur(12px) saturate(1.5);
+  border-color: rgba(255,255,255,.65);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 8px 22px -12px rgba(11,34,55,.32);
+  color: var(--ink);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.78); border-color: var(--celeste); }
+.on-dark .btn-ghost, .hero .btn-ghost {
+  background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.3); color: var(--on-dark);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 8px 22px -12px rgba(0,0,0,.4);
+}
+.on-dark .btn-ghost:hover { background: rgba(255,255,255,.18); border-color: var(--celeste-200); color: #fff; }
+
+.btn-wa {
+  background: linear-gradient(135deg, rgba(42,196,106,.96), rgba(23,146,74,.96));
+  border-color: rgba(255,255,255,.42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -3px 9px rgba(6,60,30,.30), 0 12px 30px -10px rgba(31,168,85,.5);
+}
+.btn-wa:hover { background: linear-gradient(135deg, rgba(42,196,106,1), rgba(19,124,63,1)); }
+
+/* --- Buscador: panel de vidrio esmerilado sobre los contornos --- */
+.search {
+  background: rgba(255,255,255,.80);
+  -webkit-backdrop-filter: blur(22px) saturate(1.7); backdrop-filter: blur(22px) saturate(1.7);
+  border: 1px solid rgba(255,255,255,.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 30px 64px -26px rgba(6,20,34,.62);
+}
+
+/* --- Tiles de categoría: vidrio luminoso --- */
+.stats {
+  background: rgba(255,255,255,.68);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,.7);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), var(--shadow-md);
+}
+.stats .stat { position: relative; border-radius: var(--r); padding: var(--sp-3); transition: background .25s, transform .3s var(--ease); }
+.stats .stat:hover { background: rgba(255,255,255,.6); transform: translateY(-3px); }
+
+/* --- Tarjetas de propiedad: menisco superior + glow al hover --- */
+.card { box-shadow: inset 0 1px 0 rgba(255,255,255,.7), var(--shadow-sm); }
+.card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 24px 50px -22px rgba(29,130,198,.4), var(--shadow-md); }
+.tag { -webkit-backdrop-filter: blur(8px) saturate(1.4); backdrop-filter: blur(8px) saturate(1.4); box-shadow: inset 0 1px 0 rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.22); }
+
+/* --- Chips de contacto y formulario: vidrio sobre navy --- */
+.cmethod { -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); box-shadow: inset 0 1px 0 rgba(255,255,255,.18); }
+.form-card, .detail-aside {
+  background: rgba(255,255,255,.90);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), var(--shadow-lg);
+}
+
+/* --- Header: vidrio más marcado --- */
+.site-header { -webkit-backdrop-filter: saturate(1.8) blur(18px); backdrop-filter: saturate(1.8) blur(18px); }
+.zona-chip { box-shadow: inset 0 1px 0 rgba(255,255,255,.7), var(--shadow-sm); }
+
+@media (prefers-reduced-motion: reduce) { .btn::after { display: none; } }
